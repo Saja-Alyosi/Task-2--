@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 دليل ROS الشامل</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.9;
+            color: #222;
+            background: linear-gradient(180deg, #f8f8f8 0%, #e8e8e8 50%, #d0d0d0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: linear-gradient(to right, #ffffff 0%, #f5f5f5 100%);
+            border-radius: 20px;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.15),
+                0 0 1px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.03) 0%, transparent 50%, rgba(255,255,255,0.03) 100%);
+            pointer-events: none;
+        }
+        
+        header h1 {
+            font-family: 'Lora', serif;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.3em;
+            opacity: 0.85;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        nav {
+            background: linear-gradient(90deg, #ffffff 0%, #f9f9f9 50%, #f0f0f0 100%);
+            padding: 25px 30px;
+            border-bottom: 2px solid #000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        nav button {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            color: white;
+            border: 2px solid #000;
+            padding: 12px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        nav button:hover {
+            background: linear-gradient(135deg, #333333 0%, #555555 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+        
+        nav button.active {
+            background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
+            border-color: #666;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.1);
+        }
+        
+        .content {
+            padding: 50px 40px;
+        }
+        
+        section {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h2 {
+            font-family: 'Lora', serif;
+            color: #000;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            border-bottom: 3px solid #000;
+            padding-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            position: relative;
+        }
+        
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, #000, #666);
+        }
+        
+        h3 {
+            color: #1a1a1a;
+            margin-top: 30px;
+            margin-bottom: 18px;
+            font-size: 1.5em;
+            font-weight: 700;
+            font-family: 'Lora', serif;
+            letter-spacing: -0.2px;
+        }
+        
+        p {
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        
+        .command-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #e0e0e0;
+            padding: 18px;
+            border-radius: 12px;
+            margin: 18px 0;
+            font-family: 'Courier New', 'Monaco', monospace;
+            overflow-x: auto;
+            border-left: 5px solid #666;
+            border-right: 1px solid #444;
+            font-size: 0.95em;
+            line-height: 1.6;
+            box-shadow: 
+                0 4px 12px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .command-box:hover {
+            background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+            border-left-color: #999;
+            box-shadow: 
+                0 6px 16px rgba(0,0,0,0.25),
+                inset 0 1px 0 rgba(255,255,255,0.15);
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #f5f5f5 0%, #efefef 100%);
+            border-left: 5px solid #1a1a1a;
+            padding: 20px 22px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-right: 1px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .info-box strong {
+            color: #000;
+            font-weight: 700;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
+            border-left: 5px solid #333;
+            padding: 20px 22px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-right: 1px solid #ccc;
+            color: #1a1a1a;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .step-box {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+            border: 2px solid #ddd;
+            padding: 22px 24px;
+            margin: 18px 0;
+            border-radius: 12px;
+            border-left: 5px solid #1a1a1a;
+            border-right: 1px solid #ddd;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .step-box:hover {
+            border-color: #999;
+            box-shadow: 0 5px 16px rgba(0,0,0,0.12);
+        }
+        
+        .step-box h4 {
+            color: #000;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            font-weight: 700;
+            font-family: 'Lora', serif;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        thead {
+            background: linear-gradient(90deg, #1a1a1a 0%, #333333 50%, #1a1a1a 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 1.05em;
+        }
+        
+        th {
+            padding: 16px;
+            text-align: right;
+            font-family: 'Lora', serif;
+            letter-spacing: 0.3px;
+        }
+        
+        td {
+            padding: 14px 16px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+            color: #333;
+            font-weight: 400;
+        }
+        
+        tbody tr {
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        tbody tr:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        tbody tr:hover {
+            background: #f0f0f0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .tip-list {
+            list-style: none;
+            padding-right: 0;
+        }
+        
+        .tip-list li {
+            padding: 12px 0;
+            padding-right: 35px;
+            position: relative;
+            color: #333;
+            font-weight: 500;
+            line-height: 1.8;
+        }
+        
+        .tip-list li:before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 1.4em;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .comparison-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid #1a1a1a;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .comparison-card:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .comparison-card h4 {
+            color: #000;
+            margin-bottom: 18px;
+            font-size: 1.3em;
+            font-weight: 700;
+            font-family: 'Lora', serif;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        
+        .comparison-card ul {
+            list-style-position: inside;
+            color: #333;
+        }
+        
+        .comparison-card li {
+            margin: 10px 0;
+            padding-left: 10px;
+            font-weight: 500;
+        }
+        
+        .links-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin: 25px 0;
+        }
+        
+        .link-card {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #444;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+            background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 50%, #1a1a1a 100%);
+            border-color: #666;
+        }
+        
+        .link-card strong {
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-family: 'Lora', serif;
+            letter-spacing: 0.3px;
+        }
+        
+        .link-card a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: color 0.3s ease;
+        }
+        
+        .link-card a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        footer {
+            background: linear-gradient(90deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            color: #e0e0e0;
+            text-align: center;
+            padding: 40px;
+            margin-top: 40px;
+            border-top: 2px solid #333;
+        }
+        
+        footer p {
+            margin: 8px 0;
+            font-weight: 500;
+        }
+        
+        footer p:first-child {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: white;
+            font-family: 'Lora', serif;
+        }
+        
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 5px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 { 
+                font-size: 2em; 
+            }
+            
+            header p {
+                font-size: 1.1em;
+            }
+            
+            nav ul { 
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            nav button {
+                width: 100%;
+            }
+            
+            .comparison-grid { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            h2 {
+                font-size: 1.8em;
+            }
+            
+            h3 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 دليل ROS الشامل</h1>
+            <p>Robot Operating System - نظام تشغيل الروبوتات</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><button class="tab-btn active" data-tab="intro">المقدمة</button></li>
+                <li><button class="tab-btn" data-tab="linux">أوامر Linux</button></li>
+                <li><button class="tab-btn" data-tab="ros1">ROS 1 التثبيت</button></li>
+                <li><button class="tab-btn" data-tab="ros2">ROS 2 التثبيت</button></li>
+                <li><button class="tab-btn" data-tab="commands1">أوامر ROS 1</button></li>
+                <li><button class="tab-btn" data-tab="commands2">أوامر ROS 2</button></li>
+                <li><button class="tab-btn" data-tab="comparison">المقارنة</button></li>
+                <li><button class="tab-btn" data-tab="tips">نصائح</button></li>
+            </ul>
+        </nav>
+        
+        <div class="content">
+            <!-- Section 1: Introduction -->
+            <section id="intro" class="active">
+                <h2>🤖 مقدمة عن ROS</h2>
+                
+                <h3>ما هو نظام ROS؟</h3>
+                <p>نظام تشغيل مفتوح المصدر مصمم خصيصاً لتطبيقات الروبوتات. يوفر أدوات وحزم برمجية شاملة تسهل تطوير وتشغيل الروبوتات المعقدة.</p>
+                
+                <div class="info-box">
+                    <strong>✨ المميزات الأساسية:</strong>
+                    <ul class="tip-list">
+                        <li>تواصل فعال وموثوق بين مكونات الروبوت</li>
+                        <li>مكتبات شاملة للتحكم والاستشعار</li>
+                        <li>محاكاة ثلاثية الأبعاد (Gazebo)</li>
+                        <li>أدوات تصور البيانات (RViz)</li>
+                        <li>مدعوم من قبل مجتمع عالمي ضخم</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Section 2: Linux Commands -->
+            <section id="linux">
+                <h2>🐧 أوامر Linux الأساسية</h2>
+                <p>هذه الأوامر ضرورية جداً قبل البدء مع ROS:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الأمر</th>
+                            <th>الشرح</th>
+                            <th>مثال</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ls</strong></td>
+                            <td>عرض محتويات المجلد</td>
+                            <td><code>$ ls -la</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>cd</strong></td>
+                            <td>الانتقال إلى مجلد</td>
+                            <td><code>$ cd Desktop</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>pwd</strong></td>
+                            <td>عرض المسار الحالي</td>
+                            <td><code>$ pwd</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>mkdir</strong></td>
+                            <td>إنشاء مجلد جديد</td>
+                            <td><code>$ mkdir robot</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>sudo</strong></td>
+                            <td>تنفيذ كمسؤول</td>
+                            <td><code>$ sudo apt-get update</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>apt-get install</strong></td>
+                            <td>تثبيت حزمة</td>
+                            <td><code>$ sudo apt-get install ros-humble</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Section 3: ROS 1 Installation -->
+            <section id="ros1">
+                <h2>🔧 تثبيت ROS 1 - Noetic</h2>
+                
+                <div class="warning-box">
+                    ⚠️ <strong>متطلبات التثبيت:</strong> Ubuntu 20.04 LTS
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 1️⃣: تفعيل أكواد المستودع</h4>
+                    <div class="command-box">sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 2️⃣: إضافة المفتاح الأمني</h4>
+                    <div class="command-box">sudo apt install curl && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | sudo apt-key add -</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 3️⃣: تحديث قائمة الحزم</h4>
+                    <div class="command-box">sudo apt update</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 4️⃣: تثبيت ROS 1 Noetic</h4>
+                    <div class="command-box">sudo apt install ros-noetic-desktop-full</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 5️⃣: إعداد البيئة</h4>
+                    <div class="command-box">echo 'source /opt/ros/noetic/setup.bash' >> ~/.bashrc</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 6️⃣: تحميل الإعدادات</h4>
+                    <div class="command-box">source ~/.bashrc</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 7️⃣: التحقق من التثبيت</h4>
+                    <div class="command-box">roscore</div>
+                    <p>إذا ظهرت رسالة البدء، التثبيت نجح! ✅</p>
+                </div>
+            </section>
+            
+            <!-- Section 4: ROS 2 Installation -->
+            <section id="ros2">
+                <h2>🔧 تثبيت ROS 2 - Humble</h2>
+                
+                <div class="warning-box">
+                    ⚠️ <strong>متطلبات التثبيت:</strong> Ubuntu 22.04 LTS أو أحدث
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 1️⃣: تحديث النظام</h4>
+                    <div class="command-box">sudo apt update && sudo apt upgrade -y</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 2️⃣: تثبيت البرامج المساعدة</h4>
+                    <div class="command-box">sudo apt install software-properties-common curl -y</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 3️⃣: إضافة المفتاح</h4>
+                    <div class="command-box">sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 4️⃣: إضافة المستودع</h4>
+                    <div class="command-box">echo "deb [arch=amd64 signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu jammy main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 5️⃣: تحديث الحزم</h4>
+                    <div class="command-box">sudo apt update</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 6️⃣: تثبيت ROS 2 Humble</h4>
+                    <div class="command-box">sudo apt install ros-humble-desktop -y</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 7️⃣: إعداد البيئة</h4>
+                    <div class="command-box">echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 8️⃣: تحميل الإعدادات</h4>
+                    <div class="command-box">source ~/.bashrc</div>
+                </div>
+                
+                <div class="step-box">
+                    <h4>الخطوة 9️⃣: التحقق من التثبيت</h4>
+                    <div class="command-box">ros2 --version</div>
+                </div>
+            </section>
+            
+            <!-- Section 5: ROS 1 Commands -->
+            <section id="commands1">
+                <h2>📝 أهم أوامر ROS 1</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الأمر</th>
+                            <th>الشرح</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>roscore</code></td>
+                            <td>تشغيل خادم ROS الرئيسي (يجب تشغيله أولاً)</td>
+                        </tr>
+                        <tr>
+                            <td><code>rosnode list</code></td>
+                            <td>عرض قائمة جميع العقد النشطة</td>
+                        </tr>
+                        <tr>
+                            <td><code>rostopic list</code></td>
+                            <td>عرض قائمة المواضيع المتاحة</td>
+                        </tr>
+                        <tr>
+                            <td><code>rosservice list</code></td>
+                            <td>عرض قائمة الخدمات المتاحة</td>
+                        </tr>
+                        <tr>
+                            <td><code>rostopic echo [topic_name]</code></td>
+                            <td>عرض البيانات المرسلة عبر موضوع</td>
+                        </tr>
+                        <tr>
+                            <td><code>rosmsg show [msg_type]</code></td>
+                            <td>عرض هيكل الرسالة وحقولها</td>
+                        </tr>
+                        <tr>
+                            <td><code>roslaunch [pkg] [file]</code></td>
+                            <td>تشغيل ملف إطلاق بسهولة</td>
+                        </tr>
+                        <tr>
+                            <td><code>rosrun [pkg] [node]</code></td>
+                            <td>تشغيل عقدة محددة</td>
+                        </tr>
+                        <tr>
+                            <td><code>rosparam set [param] [value]</code></td>
+                            <td>تعيين قيمة معامل</td>
+                        </tr>
+                        <tr>
+                            <td><code>rosparam get [param]</code></td>
+                            <td>الحصول على قيمة معامل</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Section 6: ROS 2 Commands -->
+            <section id="commands2">
+                <h2>📝 أهم أوامر ROS 2</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الأمر</th>
+                            <th>الشرح</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ros2 node list</code></td>
+                            <td>عرض قائمة العقد النشطة</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 topic list</code></td>
+                            <td>عرض قائمة المواضيع المتاحة</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 service list</code></td>
+                            <td>عرض قائمة الخدمات المتاحة</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 topic echo [topic]</code></td>
+                            <td>عرض البيانات المرسلة عبر موضوع</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 interface show [msg]</code></td>
+                            <td>عرض هيكل الرسالة</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 launch [pkg] [file]</code></td>
+                            <td>تشغيل ملف إطلاق</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 run [pkg] [exe]</code></td>
+                            <td>تشغيل عقدة أو برنامج</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 param list</code></td>
+                            <td>عرض قائمة المعاملات</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 param set [node] [param] [value]</code></td>
+                            <td>تعيين قيمة معامل</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 param get [node] [param]</code></td>
+                            <td>الحصول على قيمة معامل</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 node info [node]</code></td>
+                            <td>الحصول على معلومات عقدة</td>
+                        </tr>
+                        <tr>
+                            <td><code>ros2 topic info [topic]</code></td>
+                            <td>الحصول على معلومات موضوع</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Section 7: Comparison -->
+            <section id="comparison">
+                <h2>📊 مقارنة ROS 1 و ROS 2</h2>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>🔴 ROS 1 (Noetic)</h4>
+                        <ul class="tip-list">
+                            <li>Ubuntu 20.04 LTS</li>
+                            <li>بروتوكول TCP/IP</li>
+                            <li>أداء جيد</li>
+                            <li>أمان محدود</li>
+                            <li>دعم Python 2/3</li>
+                            <li>مستقر وموثوق</li>
+                            <li>حزم كثيرة متاحة</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>🟢 ROS 2 (Humble)</h4>
+                        <ul class="tip-list">
+                            <li>Ubuntu 22.04 / 24.04</li>
+                            <li>بروتوكول DDS</li>
+                            <li>أداء أفضل وأسرع</li>
+                            <li>أمان قوي جداً</li>
+                            <li>Python 3 فقط</li>
+                            <li>حديث وآمن</li>
+                            <li>المستقبل</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>💡 الخلاصة:</strong>
+                    <p>استخدم ROS 1 للمشاريع القديمة والتعلم الأساسي، واستخدم ROS 2 للمشاريع الجديدة والعملية.</p>
+                </div>
+            </section>
+            
+            <!-- Section 8: Tips -->
+            <section id="tips">
+                <h2>💡 نصائح مهمة للعمل مع ROS</h2>
+                
+                <div class="info-box">
+                    <ul class="tip-list">
+                        <li>استخدم rqt_graph في ROS 1 لتصور تدفق البيانات بين العقد</li>
+                        <li>استخدم ros2 topic hz لقياس تردد نشر الموضوع</li>
+                        <li>تأكد من تحميل setup.bash قبل استخدام أي أوامر ROS</li>
+                        <li>استخدم launch files لتشغيل عدة عقد في نفس الوقت</li>
+                        <li>احفظ أكوادك في workspace منظم</li>
+                        <li>استخدم rosbag لتسجيل البيانات وإعادة تشغيلها</li>
+                        <li>اقرأ رسائل الخطأ بعناية - فهي تخبرك بالمشكلة</li>
+                        <li>قم بعمل backup منتظم لملفات المشروع المهمة</li>
+                    </ul>
+                </div>
+                
+                <h3>🔗 روابط مهمة</h3>
+                <div class="links-section">
+                    <div class="link-card">
+                        <strong>📌 موقع ROS الرسمي</strong>
+                        <p><a href="https://www.ros.org" target="_blank">https://www.ros.org</a></p>
+                    </div>
+                    
+                    <div class="link-card">
+                        <strong>📌 توثيق ROS 1</strong>
+                        <p><a href="http://wiki.ros.org" target="_blank">http://wiki.ros.org</a></p>
+                    </div>
+                    
+                    <div class="link-card">
+                        <strong>📌 توثيق ROS 2</strong>
+                        <p><a href="https://docs.ros.org" target="_blank">https://docs.ros.org</a></p>
+                    </div>
+                    
+                    <div class="link-card">
+                        <strong>📌 محاكي Gazebo</strong>
+                        <p><a href="http://gazebosim.org" target="_blank">http://gazebosim.org</a></p>
+                    </div>
+                    
+                    <div class="link-card">
+                        <strong>📌 أداة RViz</strong>
+                        <p><a href="http://wiki.ros.org/rviz" target="_blank">http://wiki.ros.org/rviz</a></p>
+                    </div>
+                    
+                    <div class="link-card">
+                        <strong>📌 مجتمع ROS</strong>
+                        <p><a href="https://discourse.ros.org" target="_blank">https://discourse.ros.org</a></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>✨ تم إعداد هذا الدليل الشامل لتسهيل رحلتك مع الروبوتات والـ ROS ✨</p>
+            <p style="margin-top: 15px; opacity: 0.8;">© 2024 - دليل ROS الشامل</p>
+        </footer>
+    </div>
+    
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+                
+                // Remove active class from all sections and buttons
+                document.querySelectorAll('section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to selected section and button
+                document.getElementById(tabName).classList.add('active');
+                button.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
