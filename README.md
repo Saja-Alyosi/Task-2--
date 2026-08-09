@@ -1,125 +1,125 @@
-# 🤖 دليل ROS الشامل
+# 🤖 Comprehensive ROS Guide
 
 ---
 
-## 📑 جدول المحتويات
+## 📑 Table of Contents
 
-1. [مقدمة عن ROS](#مقدمة-عن-ros)
-2. [أوامر Linux الأساسية](#أوامر-linux-الأساسية)
-3. [تثبيت ROS 2 - Humble](#تثبيت-ros-2---humble)
-4. [أوامر ROS 2](#أوامر-ros-2)
+1. [Introduction to ROS](#introduction-to-ros)
+2. [Basic Linux Commands](#basic-linux-commands)
+3. [Installing ROS 2 - Humble](#installing-ros-2---humble)
+4. [ROS 2 Commands](#ros-2-commands)
 
+## Introduction to ROS
 
+### What is ROS?
 
+**ROS** (Robot Operating System) is an open-source framework designed specifically for robotics applications. It provides comprehensive tools and software packages that simplify the development and operation of complex robotic systems.
 
-## مقدمة عن ROS
+### ✨ Key Features:
 
+* ✓ Efficient and reliable communication between robot components
+* ✓ Comprehensive libraries for control and sensing
+* ✓ 3D simulation using Gazebo
+* ✓ Data visualization tools using RViz
+* ✓ Supported by a large global community
+* ✓ Free and highly customizable
 
-### ما هو نظام ROS؟
+## Basic Linux Commands
 
-**ROS** (Robot Operating System) هو نظام تشغيل مفتوح المصدر مصمم خصيصاً لتطبيقات الروبوتات. يوفر أدوات وحزم برمجية شاملة تسهل تطوير وتشغيل الروبوتات المعقدة.
+These commands are essential before getting started with ROS:
 
-### ✨ المميزات الأساسية:
+| Command           | Description                                     | Example                             |
+| ----------------- | ----------------------------------------------- | ----------------------------------- |
+| `ls`              | List the contents of the current directory      | `$ ls -la`                          |
+| `cd [path]`       | Navigate to a specific directory                | `$ cd Desktop`                      |
+| `pwd`             | Display the current directory path              | `$ pwd`                             |
+| `mkdir [name]`    | Create a new directory                          | `$ mkdir robot`                     |
+| `sudo`            | Execute a command with administrator privileges | `$ sudo apt-get update`             |
+| `apt-get update`  | Update the package list                         | `$ sudo apt-get update`             |
+| `apt-get install` | Install a package                               | `$ sudo apt-get install ros-humble` |
+| `nano [file]`     | Open a text editor                              | `$ nano setup.bash`                 |
+| `source [file]`   | Load environment variables                      | `$ source ~/.bashrc`                |
+| `echo`            | Print text or a variable                        | `$ echo $ROS_DISTRO`                |
 
-- ✓ تواصل فعال وموثوق بين مكونات الروبوت
-- ✓ مكتبات شاملة للتحكم والاستشعار
-- ✓ محاكاة ثلاثية الأبعاد (Gazebo)
-- ✓ أدوات تصور البيانات (RViz)
-- ✓ مدعوم من قبل مجتمع عالمي ضخم
-- ✓ مجاني وسهل التعديل
+## Installing ROS 2 - Humble
 
+### ⚠️ Requirements:
 
+* **Operating System:** Ubuntu 22.04 LTS or later
+* **Memory:** At least 4 GB
+* **Storage:** At least 2–3 GB
 
-## أوامر Linux الأساسية
+### 🔧 Installation Steps:
 
-هذه الأوامر ضرورية جداً قبل البدء مع ROS:
+#### Step 1️⃣: Update the System
 
-| الأمر | الشرح | مثال |
-|------|-------|------|
-| `ls` | عرض محتويات المجلد الحالي | `$ ls -la` |
-| `cd [مسار]` | الانتقال إلى مجلد معين | `$ cd Desktop` |
-| `pwd` | عرض المسار الحالي | `$ pwd` |
-| `mkdir [اسم]` | إنشاء مجلد جديد | `$ mkdir robot` |
-| `sudo` | تنفيذ الأمر كمسؤول | `$ sudo apt-get update` |
-| `apt-get update` | تحديث قائمة الحزم | `$ sudo apt-get update` |
-| `apt-get install` | تثبيت حزمة | `$ sudo apt-get install ros-humble` |
-| `nano [ملف]` | فتح محرر نصوص | `$ nano setup.bash` |
-| `source [ملف]` | تحميل متغيرات البيئة | `$ source ~/.bashrc` |
-| `echo` | طباعة نص أو متغير | `$ echo $ROS_DISTRO` |
-
-
-
-## تثبيت ROS 2 - Humble
-
-### ⚠️ المتطلبات:
-- **نظام التشغيل:** Ubuntu 22.04 LTS أو أحدث
-- **الذاكرة:** 4 GB على الأقل
-- **المساحة:** 2-3 GB على الأقل
-
-### 🔧 خطوات التثبيت:
-
-#### الخطوة 1️⃣: تحديث النظام
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
 
-#### الخطوة 2️⃣: تثبيت البرامج المساعدة
+#### Step 2️⃣: Install Required Utilities
+
 ```bash
 sudo apt install software-properties-common curl -y
 ```
 
-#### الخطوة 3️⃣: إضافة المفتاح
+#### Step 3️⃣: Add the Key
+
 ```bash
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 ```
 
-#### الخطوة 4️⃣: إضافة المستودع
+#### Step 4️⃣: Add the Repository
+
 ```bash
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu jammy main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 ```
 
-#### الخطوة 5️⃣: تحديث الحزم
+#### Step 5️⃣: Update the Packages
+
 ```bash
 sudo apt update
 ```
 
-#### الخطوة 6️⃣: تثبيت ROS 2 Humble
+#### Step 6️⃣: Install ROS 2 Humble
+
 ```bash
 sudo apt install ros-humble-desktop -y
 ```
 
-#### الخطوة 7️⃣: إعداد البيئة
+#### Step 7️⃣: Set Up the Environment
+
 ```bash
 echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
 ```
 
-#### الخطوة 8️⃣: تحميل الإعدادات
+#### Step 8️⃣: Load the Configuration
+
 ```bash
 source ~/.bashrc
 ```
 
-#### الخطوة 9️⃣: التحقق من التثبيت
+#### Step 9️⃣: Verify the Installation
+
 ```bash
 ros2 --version
 ```
 
+## ROS 2 Commands
 
-## أوامر ROS 2
+### Basic Commands:
 
-### الأوامر الأساسية:
-
-| الأمر | الشرح |
-|------|-------|
-| `ros2 node list` | عرض قائمة العقد النشطة |
-| `ros2 topic list` | عرض قائمة المواضيع المتاحة |
-| `ros2 service list` | عرض قائمة الخدمات المتاحة |
-| `ros2 topic echo [topic_name]` | عرض البيانات المرسلة عبر موضوع |
-| `ros2 interface show [msg_type]` | عرض هيكل الرسالة |
-| `ros2 launch [package] [launch_file]` | تشغيل ملف إطلاق |
-| `ros2 run [package] [executable]` | تشغيل عقدة أو برنامج |
-| `ros2 param list` | عرض قائمة المعاملات |
-| `ros2 param set [node] [param] [value]` | تعيين قيمة معامل |
-| `ros2 param get [node] [param]` | الحصول على قيمة معامل |
-| `ros2 node info [node_name]` | الحصول على معلومات عقدة |
-| `ros2 topic info [topic_name]` | الحصول على معلومات موضوع |
-
+| Command                                 | Description                                 |
+| --------------------------------------- | ------------------------------------------- |
+| `ros2 node list`                        | Display a list of active nodes              |
+| `ros2 topic list`                       | Display a list of available topics          |
+| `ros2 service list`                     | Display a list of available services        |
+| `ros2 topic echo [topic_name]`          | Display the data being published on a topic |
+| `ros2 interface show [msg_type]`        | Display the structure of a message          |
+| `ros2 launch [package] [launch_file]`   | Run a launch file                           |
+| `ros2 run [package] [executable]`       | Run a node or executable                    |
+| `ros2 param list`                       | Display a list of parameters                |
+| `ros2 param set [node] [param] [value]` | Set a parameter value                       |
+| `ros2 param get [node] [param]`         | Get a parameter value                       |
+| `ros2 node info [node_name]`            | Get information about a node                |
+| `ros2 topic info [topic_name]`          | Get information about a topic               |
