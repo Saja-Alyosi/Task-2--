@@ -1,101 +1,72 @@
-🤖 ROS 2 from Scratch – الدليل الشامل لتعلم ROS 2
-🚀 ملخص كامل للمفاهيم الأساسية، أوامر التثبيت، وإنشاء أول روبوت محاكى باستخدام ROS 2
+# 🤖 ROS 2 from Scratch – The Ultimate Guide
 
-📌 المحتويات
-ما هو ROS 2؟
+> 🚀 A complete, professional summary of ROS 2 fundamentals, installation, and building your first simulated robot.
 
-تثبيت Ubuntu و ROS 2
+---
 
-أساسيات Linux للمبتدئين
+## 📌 Table of Contents
 
-المفاهيم الأساسية في ROS 2
+- [What is ROS 2?](#-what-is-ros-2)
+- [Installing Ubuntu & ROS 2](#-installing-ubuntu--ros-2)
+- [Linux Basics for Beginners](#-linux-basics-for-beginners)
+- [ROS 2 Core Concepts](#-ros-2-core-concepts)
+- [Creating Your First Node](#-creating-your-first-node)
+- [Node Communication (Topics, Services, Actions)](#-node-communication-topics-services-actions)
+- [Parameters](#-parameters)
+- [Launch Files](#-launch-files)
+- [Building a Custom Robot (URDF + TF)](#-building-a-custom-robot-urdf--tf)
+- [Simulating in Gazebo](#-simulating-in-gazebo)
+- [Command Cheat Sheet](#-command-cheat-sheet)
+- [What's Next?](#-whats-next)
+- [Additional Resources](#-additional-resources)
 
-إنشاء أول عقدة (Node)
+---
 
-التواصل بين العُقد (Topics, Services, Actions)
+## 🧠 What is ROS 2?
 
-الباراميترات (Parameters)
+![ROS Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ros_logo.svg/1200px-Ros_logo.svg.png)
 
-ملفات الإطلاق (Launch Files)
+**ROS 2** (Robot Operating System 2) is an open-source framework for developing robotics applications. It consists of:
 
-إنشاء روبوت مخصص (URDF + TF)
+| Component | Description |
+|-----------|-------------|
+| 🧩 **Framework** | A unified software structure for developing Nodes |
+| 🛠️ **Tools** | Essential utilities like RViz, Gazebo, and rqt_graph |
+| 🔌 **Plugins** | Pre-built packages like Navigation 2 and MoveIt 2 |
+| 🌍 **Community** | A vast, active community of developers and researchers |
 
-محاكاة الروبوت في Gazebo
+### ✅ Key Features:
+- Supports **Python** & **C++**
+- Runs on **Ubuntu**, **Windows**, and **macOS**
+- Free and open-source
+- Suitable for complex robots and industrial projects
 
-أهم الأوامر (Cheat Sheet)
+---
 
-ماذا بعد؟
+## 💻 Installing Ubuntu & ROS 2
 
-🧠 ما هو ROS 2؟
-https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ros_logo.svg/1200px-Ros_logo.svg.png
+### 🔹 System Requirements
+- **OS:** Ubuntu 24.04 (Noble Numbat)
+- **ROS 2 Distribution:** Jazzy Jalisco (LTS until 2029)
 
-ROS 2 هو إطار عمل مفتوح المصدر لتطوير تطبيقات الروبوتات. يتكون من:
+### 🔹 Installation Steps
 
-المكون	الوصف
-🧩 Framework	هيكل برمجي موحّد لتطوير العُقد (Nodes)
-🛠️ Tools	أدوات مساعدة مثل RViz و Gazebo و rqt_graph
-🔌 Plugins	حزم جاهزة مثل Navigation 2 و MoveIt 2
-🌍 Community	مجتمع ضخم من المطورين والباحثين
-✅ مميزات ROS 2:
-
-يدعم Python و C++
-
-يعمل على Ubuntu، Windows، و macOS
-
-موزع مجاني ومفتوح المصدر
-
-مناسب للروبوتات المعقدة والمشاريع الصناعية
-
-💻 تثبيت Ubuntu و ROS 2
-🔹 المتطلبات الأساسية
-نظام التشغيل: Ubuntu 24.04 (Noble Numbat)
-
-إصدار ROS: Jazzy Jalisco (LTS حتى 2029)
-
-🔹 خطوات التثبيت
-bash
-# 1. تحديث الحزم
+```bash
+# 1. Update system packages
 sudo apt update && sudo apt upgrade -y
 
-# 2. تثبيت الأدوات المطلوبة
+# 2. Install required tools
 sudo apt install software-properties-common curl -y
 
-# 3. إضافة مفتاح ROS
+# 3. Add ROS GPG key
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 
-# 4. إضافة المستودع
+# 4. Add ROS repository
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
-# 5. تثبيت ROS 2
+# 5. Install ROS 2
 sudo apt update
 sudo apt install ros-jazzy-desktop -y
 
-# 6. تثبيت أدوات التطوير
+# 6. Install development tools
 sudo apt install ros-dev-tools -y
-🔹 تفعيل البيئة
-bash
-# إضافة إلى .bashrc للتشغيل التلقائي
-echo 'source /opt/ros/jazzy/setup.bash' >> ~/.bashrc
-source ~/.bashrc
-🐧 أساسيات Linux للمبتدئين
-الأمر	الوظيفة
-ls	عرض محتويات المجلد
-cd	التنقل بين المجلدات
-pwd	عرض المسار الحالي
-mkdir	إنشاء مجلد جديد
-touch	إنشاء ملف جديد
-rm	حذف ملف
-rm -rf	حذف مجلد كامل
-cp	نسخ ملف
-mv	نقل أو إعادة تسمية ملف
-nano	محرر نصوص داخل الطرفية
-sudo	تنفيذ أمر بصلاحيات المدير
-📁 هيكل نظام الملفات في Ubuntu
-المسار	الوصف
-/bin, /sbin	الأوامر الأساسية للنظام
-/etc	ملفات الإعدادات
-/home/user	المجلد الشخصي للمستخدم
-/opt	مكان تثبيت ROS
-/usr	البرامج المثبتة (مثل Program Files)
-/var/log	سجلات النظام
-/boot	ملفات الإقلاع
